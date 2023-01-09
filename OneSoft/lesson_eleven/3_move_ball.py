@@ -54,3 +54,5 @@ while True:
     check_border(blue_ball)
     move_ball(red_ball)
     move_ball(blue_ball)
+
+print('hello')
