@@ -29,7 +29,7 @@ def make_ball(speed: int = 1, color='red'):
     return pen
 
 
-def move_ball(ball: Pen, addit_coords=0):
+def move_ball(ball: Pen):
     """Move ball"""
     x = ball.xcor()
     y = ball.ycor()
