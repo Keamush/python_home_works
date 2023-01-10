@@ -147,7 +147,7 @@ barrier_one = make_barrier()
 while True:
     for ball in balls:
         check_border(ball)
-        check_barrier(ball)
+        # check_barrier(ball)
         move_ball(ball)
     balls_collisions(balls)
     window.update()
