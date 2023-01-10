@@ -67,8 +67,8 @@ turtle_bob.left(180)
 turtle_bob.forward(200)
 
 draw_square(turtle_steve, 150)
-draw_triangle(turtle_steve, 100)
-
-draw_square(turtle_bob, 250)
+# draw_triangle(turtle_steve, 100)
+#
+# draw_square(turtle_bob, 250)
 
 window.mainloop()
