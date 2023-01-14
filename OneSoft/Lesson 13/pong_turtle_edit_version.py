@@ -1,3 +1,4 @@
+import winsound
 from turtle import Pen, Screen
 from time import sleep
 from random import choice
@@ -77,6 +78,16 @@ def reset_ball():
     ball.delta_y *= choice(directions)
 
 
+# Displays the score
+sketch = Pen()
+sketch.speed(0)
+sketch.color("white")
+sketch.penup()
+sketch.hideturtle()
+sketch.goto(0, 300)
+sketch.write("Left_player : 0    Right_player: 0",
+                 align="center", font=("Courier", 24, "normal"))
+
 def check_border():
     global score_user, score_computer
     x = ball.xcor()
@@ -84,12 +95,21 @@ def check_border():
     if y > HEIGHT_HALF - ball.size // 2 or y < -HEIGHT_HALF + ball.size // 2:
         ball.delta_y *= -1
 
+
     if x > WIDTH_HALF + ball.size or x < -WIDTH_HALF - ball.size:
         if x < 0:
             score_computer += 1
+            winsound.PlaySound("boing-101318.mp3", winsound.SND_ASYNC)
+            sketch.clear()
+            sketch.write(f'Left_player: {score_computer}     Right_player: {score_user}',
+                         align="center", font=("Courier", 24, "normal"))
             print(f'Computer win, computer_score: {score_computer}')
         else:
             score_user += 1
+            winsound.PlaySound("boing-101318.mp3", winsound.SND_ASYNC)
+            sketch.clear()
+            sketch.write(f'Left_player: {score_computer}     Right_player: {score_user}',
+                         align="center", font=("Courier", 24, "normal"))
             print(f'Player win, player_score: {score_user}')
         reset_ball()
 
@@ -100,10 +120,13 @@ def check_ball_paddle_collision():
             (paddle_computer.ycor() + paddle_computer.width // 2 > ball.ycor() > paddle_computer.ycor() - paddle_computer.width // 2):
         ball.setx(WIDTH_HALF - 50 - paddle_computer.height)
         ball.delta_x *= -1
+        winsound.PlaySound("8-bit-powerup-6768.mp3", winsound.SND_ASYNC)
     elif (-WIDTH_HALF + 50 + paddle_user.height > ball.xcor() > -WIDTH_HALF + 40 + paddle_user.height) and \
             (paddle_user.ycor() + paddle_user.width // 2 > ball.ycor() >paddle_user.ycor() - paddle_user.width // 2):
         ball.setx(-WIDTH_HALF + 50 + paddle_user.height)
         ball.delta_x *= -1
+        winsound.PlaySound("8-bit-powerup-6768.mp3", winsound.SND_ASYNC)
+
 
 
 window = make_window()
@@ -116,8 +139,18 @@ score_computer = 0
 directions = [-1, 1]
 ball = make_ball()
 
+
 while True:
     move_ball()
     check_border()
     check_ball_paddle_collision()
+
+
+    #AI Player
+    if paddle_computer.ycor() < ball.ycor():
+        move_paddle(paddle_computer, 'up')
+
+    elif paddle_computer.ycor() > ball.ycor():
+        move_paddle(paddle_computer, 'down')
+
     window.update()
