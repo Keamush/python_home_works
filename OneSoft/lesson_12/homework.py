@@ -1,24 +1,26 @@
-import turtle
+from tkinter import messagebox
 from turtle import Screen, Pen
 from random import randint, random, choice
 from typing import List, Union
 
-WIDTH = 800
-HEIGHT = 400
+WIDTH = 1000
+HEIGHT = 800
+WIDTH_HALF = WIDTH // 2
+HEIGHT_HALF = HEIGHT // 2
 
 
 def move_player(direction: str):
     """Move player with arrows"""
-    if direction == 'up' and player.ycor() <= HEIGHT // 2 - player.radius - player.speed:
+    if direction == 'up' and player.ycor() <= HEIGHT_HALF - player.radius - player.speed:
         player.setheading(90)
         player.forward(player.speed)
-    elif direction == 'down' and player.ycor() >= -HEIGHT // 2 + player.radius + player.speed:
+    elif direction == 'down' and player.ycor() >= -HEIGHT_HALF + player.radius + player.speed:
         player.setheading(270)
         player.forward(player.speed)
-    elif direction == 'left' and player.xcor() >= -WIDTH // 2 + player.radius + player.speed:
+    elif direction == 'left' and player.xcor() >= -WIDTH_HALF + player.radius + player.speed:
         player.setheading(180)
         player.forward(player.speed)
-    elif direction == 'right' and player.xcor() <= WIDTH // 2 - player.radius - player.speed:
+    elif direction == 'right' and player.xcor() <= WIDTH_HALF - player.radius - player.speed:
         player.setheading(0)
         player.forward(player.speed)
 
@@ -56,8 +58,8 @@ def make_ball(speed: Union[float, int] = 0.05, shapesize: Union[float, int] = 0.
     pen.shape('circle')
     pen.color(random_color())
     pen.shapesize(shapesize, shapesize)
-    pen.setx(randint(-WIDTH // 2 + pen.radius, WIDTH // 2 - pen.radius))
-    pen.sety(randint(-HEIGHT // 2 + pen.radius, HEIGHT // 2 - pen.radius))
+    pen.setx(randint(-WIDTH_HALF + pen.radius, WIDTH_HALF - pen.radius))
+    pen.sety(randint(-HEIGHT_HALF + pen.radius, HEIGHT_HALF - pen.radius))
     pen.showturtle()
     return pen
 
@@ -66,7 +68,7 @@ def make_player(shapesize: Union[float, int] = 2.0):
     """Make player object"""
     pen = Pen()
     pen.up()
-    pen.speed = 2
+    pen.speed = 5
     pen.radius = 20 * shapesize // 2
     pen.shape('square')
     pen.color('white')
@@ -75,28 +77,29 @@ def make_player(shapesize: Union[float, int] = 2.0):
     return pen
 
 
-def make_pen(size: int = 5):
-    """Make pen object"""
+def make_score():
+    """Make pen to draw score"""
     pen = Pen()
-    pen.width(size)
+    pen.hideturtle()
+    pen.speed(0)
     pen.up()
+    pen.color('white')
+    pen.setpos((-WIDTH_HALF + 60, HEIGHT_HALF - 40))
     return pen
 
 
-def make_barrier(shapesize: Union[float, int] = 5.0):
-    barrier = Pen()
-    barrier.penup()
-    barrier.hideturtle()
-    barrier.speed(0)
-    barrier.shape('square')
-    barrier.color('red')
-    barrier.shapesize(shapesize, shapesize)
-    barrier.goto(50, 0)
-    barrier.showturtle()
-    barrier.forward(150)
-    barrier.penup()
-    print(barrier.pos())
-    return barrier
+def draw_score(score: Pen, balls_qty: int):
+    """Draw balls left to win"""
+    score.clear()
+    score.write(f'Balls: {balls_qty}', align='center', font=('Arial', 16, 'bold'))
+
+
+def check_win(balls_qty: int):
+    """Check if player win"""
+    if balls_qty <= 0:
+        messagebox.showinfo("Winner", "You win in this hard game!")
+        window.bye()
+
 
 def move_ball(ball: Pen):
     """Move ball"""
@@ -106,54 +109,46 @@ def move_ball(ball: Pen):
 
 
 def check_border(ball: Pen):
-    """Check border and change direction"""
-    if ball.xcor() > WIDTH // 2 - ball.radius or ball.xcor() < -WIDTH // 2 + ball.radius:
+    """Check border and chance direction"""
+    if ball.xcor() > WIDTH_HALF - ball.radius or ball.xcor() < -WIDTH_HALF + ball.radius:
         ball.delta_x *= -1
 
-    if ball.ycor() > HEIGHT // 2 - ball.radius or ball.ycor() < -HEIGHT // 2 + ball.radius:
+    if ball.ycor() > HEIGHT_HALF - ball.radius or ball.ycor() < -HEIGHT_HALF + ball.radius:
         ball.delta_y *= -1
-
-
-def check_barrier(balls: List[Pen]):
-    """Check barrier diapason and change direction"""
-    if - 100 <= balls.ycor() <= 100  \
-            and - 100 <= balls.xcor() <= 100:
-        balls.delta_x = -balls.delta_x
-    # if ball.xcor() >= 50 - ball.radius and ball.xcor() <= 200 + ball.radius:
-    #     ball.delta_x *= -1
-    #
-    # if ball.ycor() >= 0 - ball.radius or ball.ycor() <= 150 + ball.radius:
-    #     ball.delta_y *= -1
 
 
 def balls_collisions(balls: List[Pen]):
     """Check if balls collision"""
     for i in range(len(balls)):
-        # if barrier_one.distance(barrier_one) < balls[].radius:
-        #     balls[i].delta_x *= -1
-        #     balls[i].delta_y *= -1
         for j in range(i + 1, len(balls)):
             if balls[i].distance(balls[j]) < balls[i].radius + balls[j].radius:
                 balls[i].delta_x, balls[j].delta_x = balls[j].delta_x, balls[i].delta_x
                 balls[i].delta_y, balls[j].delta_y = balls[j].delta_y, balls[i].delta_y
 
 
+def collect_balls(balls: List[Pen]):
+    """Check player and ball collision"""
+    for ball in balls:
+        if player.distance(ball) < ball.radius + player.radius:
+            ball.hideturtle()
+            draw_score(score, len(balls) - 1)
+    balls = [ball for ball in balls if ball.isvisible()]
+    return balls
+
 
 window = make_window()
 ball_sizes = [0.5, 0.7, 1.0, 1.2]
-balls = [make_ball(shapesize=choice(ball_sizes)) for _ in range(25)]
+balls = [make_ball(shapesize=choice(ball_sizes)) for _ in range(10)]
 player = make_player()
-barrier_one = make_barrier()
 
-# if barrier_one() - 100 <= balls.ycor() <= barrier_one() +100 \
-#         and barrier_one() - 100 <= balls.xcor() <= barrier_one() + 100:
-#     balls.delta_x = -balls.delta_x
+score = make_score()
+score.write(f'Balls: {len(balls)}', align='center', font=('Arial', 16, 'bold'))
 
 while True:
     for ball in balls:
         check_border(ball)
         move_ball(ball)
     balls_collisions(balls)
-    # check_barrier(balls)
+    balls = collect_balls(balls)
     window.update()
-
+    check_win(len(balls))

@@ -1,4 +1,6 @@
 import turtle, random
+from ctypes import Union
+
 count = 10
 s = [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5]
 balls = ['bal'+ str(i) for i in range(count)]
@@ -40,15 +42,36 @@ class Ball:
         self.name.showturtle()
         self.name.color(*self.color)
 
+    def make_barrier(shapesize: int = 5):
+        barrier = turtle.Pen()
+        barrier.penup()
+        barrier.hideturtle()
+        barrier.speed(0)
+        barrier.shape('square')
+        barrier.color('red')
+        barrier.shapesize(shapesize, shapesize)
+        barrier.goto(50, 0)
+        barrier.showturtle()
+        barrier.forward(150)
+        barrier.penup()
+        print(barrier.pos())
+        return barrier
+    make_barrier()
+
     def moveBall(self):
         x, y = self.name.position()
         if x + self.dx >= 250 - 10 or x + self.dx <= -250 + 10:
-            self.dx = -self.dx
+            self.dx = -self.dx \
+
         if y + self.dy >= 250 - 10 or y + self.dy <= -250 + 10:
             self.dy = -self.dy
+
         self.name.goto(x + self.dx, y + self.dy)
 
+    def
+
 Border
+
 
 for i in range(count):
     balls[i] = Ball(balls[i], random.choice(s), random.choice(s), randomColors())
