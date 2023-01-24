@@ -1,8 +1,8 @@
 from turtle import Turtle
 from math import sin, cos
 
-from solar_system.classes.sprite import Sprite
-from solar_system.dto.planet_data import PlanetData
+from Lesson_16.solar_system.classes.sprite import Sprite
+from Lesson_16.solar_system.dto.planet_data import PlanetData
 
 
 class Planet(Sprite):

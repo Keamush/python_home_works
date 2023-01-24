@@ -1,12 +1,14 @@
 from turtle import Screen, Turtle
-from screeninfo import get_monitors
+from win32api import GetSystemMetrics
 from typing import List, Callable
 
-from solar_system.classes.planet import PlanetData, Planet
+from Lesson_16.solar_system.classes.planet import PlanetData, Planet
 
+# print("width =", GetSystemMetrics(0))
+# print("height =", GetSystemMetrics(1))
 
-WIDTH = get_monitors().pop().width
-HEIGHT = get_monitors().pop().height - 50
+WIDTH = 1920
+HEIGHT = 1030
 
 
 def make_window():
