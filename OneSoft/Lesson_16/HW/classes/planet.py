@@ -1,9 +1,8 @@
 from turtle import Turtle
-from math import sin, cos, sqrt
-import datetime
+from math import sin, cos
 
-from Lesson_16.solar_system.classes.sprite import Sprite
-from Lesson_16.solar_system.dto.planet_data import PlanetData
+from solar_system.classes.sprite import Sprite
+from solar_system.dto.planet_data import PlanetData
 
 
 class Planet(Sprite):
@@ -30,12 +29,15 @@ class Planet(Sprite):
 
 
 class Asteroid(Planet):
-    """Planet class"""
-    def __init__(self, planet_data: PlanetData, star: Turtle):
-        super().__init__(planet_data, star)
-        """Move asteroid"""
-        self.x = self.radius * cos(self.angle)
-        self.y = self.radius * sin(self.angle)
-        self.goto(self.star.xcor()**2 + self.x, self.star.ycor() + self.y)
-        self.angle += self.increase_angle
+    """Asteroid class"""
 
+    def __init__(self, planet_data: PlanetData, star: Turtle, initial_angle: float):
+        super().__init__(planet_data, star)
+        self.angle = initial_angle
+
+    def move(self):
+        """Move planet along elliptical orbit"""
+        self.angle += self.increase_angle
+        self.x = self.radius * 0.5 * cos(self.angle) - self.radius*0.1
+        self.y = self.radius * 0.3 * sin(self.angle)
+        self.goto(self.star.xcor() + self.x, self.star.ycor() + self.y)

@@ -1,14 +1,14 @@
 from turtle import Screen, Turtle
-from win32api import GetSystemMetrics
+from screeninfo import get_monitors
 from typing import List, Callable
+from random import choice, uniform
+import math
 
-from Lesson_16.solar_system.classes.planet import PlanetData, Planet, Asteroid
+from solar_system.classes.planet import PlanetData, Planet, Asteroid
 
-# print("width =", GetSystemMetrics(0))
-# print("height =", GetSystemMetrics(1))
 
-WIDTH = 1920
-HEIGHT = 1030
+WIDTH = get_monitors().pop().width
+HEIGHT = get_monitors().pop().height - 50
 
 
 def make_window():
@@ -40,22 +40,34 @@ def make_solar_planets_data():
     mars_data = PlanetData((0.8, 0.8), 'red', 300, 0.0007)
     phobos_data = PlanetData((0.3, 0.3), 'lime', 40, 0.007)
     deimos_data = PlanetData((0.2, 0.2), 'white', 25, 0.008)
-    asteroid_data = PlanetData((0.7, 0.7), 'white', 400, 0.009)
     planets_data = {
         'earth': earth_data,
         'moon': moon_data,
         'saturn': saturn_data,
         'mars': mars_data,
         'phobos': phobos_data,
-        'deimos': deimos_data,
-        'asteroid': asteroid_data
+        'deimos': deimos_data
     }
     return planets_data
+
+
+def make_asteroids(central_planet: Turtle, count: int = 200):
+    asteroids = []
+    for _ in range(count):
+        color = choice(['blue', 'red', 'yellow', 'orange'])
+        size = choice([(0.1, 0.1), (0.15, 0.15), (0.2, 0.2)])
+        radius = choice([1150, 1170, 1190, 1210])
+        initial_angle = uniform(0, 2 * math.pi)
+        asteroid_data = PlanetData(size, color, radius, 0.002)
+        asteroid = Asteroid(asteroid_data, central_planet, initial_angle)
+        asteroids.append(asteroid)
+    return asteroids
 
 
 def make_solar_planets(base_planet: Turtle):
     """Make planets of solar system"""
     sun = base_planet
+    asteroids = make_asteroids(sun)
     planets_data = make_solar_planets_data()
     earth = Planet(planets_data['earth'], sun)
     moon = Planet(planets_data['moon'], earth)
@@ -63,8 +75,8 @@ def make_solar_planets(base_planet: Turtle):
     mars = Planet(planets_data['mars'], sun)
     phobos = Planet(planets_data['phobos'], mars)
     deimos = Planet(planets_data['deimos'], mars)
-    asteroid = Asteroid(planets_data['asteroid'], sun)
-    planets = [earth, moon, saturn, mars, phobos, deimos, asteroid]
+    planets = [earth, moon, saturn, mars, phobos, deimos]
+    planets += asteroids
     return planets
 
 
