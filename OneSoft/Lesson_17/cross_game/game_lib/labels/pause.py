@@ -1,6 +1,6 @@
 from turtle import Turtle
 
-from cross_game.game_lib.settings.game_settings import FONT
+from Lesson_17.cross_game.game_lib.settings.game_settings import FONT
 
 
 class PauseLabel(Turtle):

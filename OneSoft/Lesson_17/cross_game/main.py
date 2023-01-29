@@ -1,9 +1,9 @@
 from time import sleep
 
-from cross_game.game_lib.labels.pause import PauseLabel
-from cross_game.game_lib.sprites.player import Player
-from cross_game.game_lib.windows.main_window import Window
-from cross_game.managers.car_manager import CarManager
+from Lesson_17.cross_game.game_lib.labels.pause import PauseLabel
+from Lesson_17.cross_game.game_lib.sprites.player import Player
+from Lesson_17.cross_game.game_lib.windows.main_window import Window
+from Lesson_17.cross_game.managers.car_manager import CarManager
 
 
 class Game:

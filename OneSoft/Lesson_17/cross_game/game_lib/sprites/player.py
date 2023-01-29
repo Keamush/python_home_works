@@ -1,5 +1,5 @@
-from cross_game.game_lib.sprites.base_sprite import Sprite
-from cross_game.game_lib.settings.game_settings import (
+from Lesson_17.cross_game.game_lib.sprites.base_sprite import Sprite
+from Lesson_17.cross_game.game_lib.settings.game_settings import (
     PLAYER_START_POSITION,
     PLAYER_MOVE_DISTANCE,
     FINISH_LINE

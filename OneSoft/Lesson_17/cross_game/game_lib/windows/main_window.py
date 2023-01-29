@@ -1,6 +1,6 @@
 from turtle import Screen
 
-from cross_game.game_lib.settings.game_settings import SCREEN_WIDTH, SCREEN_HEIGHT
+from Lesson_17.cross_game.game_lib.settings.game_settings import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class Window:
