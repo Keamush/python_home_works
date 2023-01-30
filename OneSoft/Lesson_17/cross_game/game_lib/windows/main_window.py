@@ -1,6 +1,7 @@
 from turtle import Screen
 
-from Lesson_17.cross_game.game_lib.settings.game_settings import SCREEN_WIDTH, SCREEN_HEIGHT
+
+from OneSoft.Lesson_17.cross_game.game_lib.settings.game_settings import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class Window:
@@ -11,3 +12,8 @@ class Window:
         self.canvas.onkey(self.canvas.bye, 'Escape')
         self.canvas.listen()
         self.canvas.tracer(0)
+
+
+
+
+

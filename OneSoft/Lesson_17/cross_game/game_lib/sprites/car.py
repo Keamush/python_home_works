@@ -1,5 +1,5 @@
-from Lesson_17.cross_game.game_lib.sprites.base_sprite import Sprite
-from Lesson_17.cross_game.game_lib.settings.game_settings import STARTING_MOVE_DISTANCE
+from OneSoft.Lesson_17.cross_game.game_lib.sprites.base_sprite import Sprite
+from OneSoft.Lesson_17.cross_game.game_lib.settings.game_settings import STARTING_MOVE_DISTANCE
 
 
 class Car(Sprite):

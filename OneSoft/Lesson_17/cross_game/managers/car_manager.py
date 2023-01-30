@@ -1,7 +1,7 @@
 import random
 
-from Lesson_17.cross_game.game_lib.sprites.car import Car
-from Lesson_17.cross_game.game_lib.settings.game_settings import CAR_COLORS, SCREEN_HEIGHT, SCREEN_WIDTH
+from OneSoft.Lesson_17.cross_game.game_lib.sprites.car import Car
+from OneSoft.Lesson_17.cross_game.game_lib.settings.game_settings import CAR_COLORS, SCREEN_HEIGHT, SCREEN_WIDTH
 
 
 class CarManager:
