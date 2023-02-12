@@ -1,9 +1,20 @@
 from tkinter import *
+import os
+from tkinter import messagebox
 from typing import Union
 from werkzeug.security import generate_password_hash, check_password_hash
+import json
+from json import JSONDecodeError
+from typing import List, Dict
+import pickle
 
-from auth_new.front.interfaces import WindowInterface, WindowEntryInterface
+from OneSoft.Lesson_20.auth_new.front.interfaces import WindowInterface, WindowEntryInterface
 
+def init_db(filename: str):
+    if os.path.exists(filename):
+        return True
+    with open(filename, 'w') as file:
+        pass
 
 class MainWindow(Tk, WindowInterface):
     def __init__(self):
@@ -71,6 +82,29 @@ class LoginWindow(Toplevel, WindowInterface, WindowEntryInterface):
         self.password_entry.delete(0, END)
         # self.destroy()
 
+    def read_user_credential(self, filename: str):
+        with open(filename, 'r') as file:
+            try:
+                credentials = json.load(file)
+            except JSONDecodeError:
+                return []
+        return credentials
+
+    # @property
+    # def log_pass(self):
+    #     with open("data.json", "r") as f:
+    #         data = f.read()
+    #         json_data = json.load(data)
+    #         return json_data
+    #     f.close()
+    #     if self.login.get() in a:
+    #         if generate_password_hash(self.password.get()) == a[self.login.get()]:
+    #             messagebox.showinfo("Вход выполнен", "Добро пожаловать!")
+    #         else:
+    #             messagebox.showerror("Ошибка", "Неверные данные. Повторите снова.")
+    #     else:
+    #         messagebox.showerror("Ошибка", "Неверный логин")
+
 
 class RegisterWindow(Toplevel, WindowInterface, WindowEntryInterface):
     def __init__(self, root_window):
@@ -104,6 +138,31 @@ class RegisterWindow(Toplevel, WindowInterface, WindowEntryInterface):
 
     def on_invalid(self):
         self.show_message('Weak password')
+
+    def write_user_credential(self, filename: str, credentials: List[Dict[str, str]]):
+        with open(filename, 'w') as file:
+            json.dump(credentials, file, indent=4)
+
+    # def save(self):
+    #     login_pass_save = [{
+    #         "login": self.login.get(),
+    #         "password": generate_password_hash(self.password.get())}]
+    #     json_obj = json.load(login_pass_save)
+    #     with open("data.json", "w") as f:
+    #         f.write(json.dump(json_obj, indent=2, ensure_ascii=False))
+    #     f.close()
+    #     LoginWindow()
+    #
+    # def add_to_json(self):
+    #     login_pass_save = [{
+    #         "login": self.login.get(),
+    #         "password": generate_password_hash(self.password.get())
+    # }]
+    #     data = json.load(open("data.json"))
+    #     data.append(login_pass_save)
+    #     with open("data.json", "w") as file:
+    #         json.dump(data, file, indent=2, ensure_ascii=False)
+
 
     def create_user_interface(self):
         validate_password = (self.register(self.check_is_password_strong), '%P')
@@ -165,3 +224,20 @@ class RegisterWindow(Toplevel, WindowInterface, WindowEntryInterface):
         self.password_repeat_entry.delete(0, END)
 
         # self.destroy()
+
+def main(username: str, pass_hash: str, filename: str):
+    init_db(filename)
+    credentials = LoginWindow.read_user_credential(filename)
+    new_user = {
+        'username': username,
+        'pass_hash': pass_hash
+    }
+    credentials.append(new_user)
+    RegisterWindow.write_user_credential(filename, credentials)
+
+DB_NAME = 'user.json'
+
+if __name__ == '__main__':
+    nick_name = 'pocker'
+    user_pass_hash = '260000$LEKlPHCXsoS67dsU$e01f6a7d737fde785aba8a6a8a5a94117a689cb3c217c56b1b424a0478adbf60'
+    main(nick_name, user_pass_hash, DB_NAME)

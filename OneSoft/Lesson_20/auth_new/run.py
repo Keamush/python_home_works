@@ -1,4 +1,4 @@
-from auth_new.front.windows import MainWindow
+from OneSoft.Lesson_20.auth_new.front.windows import MainWindow
 
 
 def main():
