@@ -223,7 +223,7 @@ def create_json_file(path, filename):
     Если нет - создаёт пустой JSON файл с именем filename.json
     """
     full_path = path + '/' + filename + '.json'
-    if ~(os.path.isfile(full_path)):
+    if not(os.path.isfile(full_path)):
         json_content = {}
         save_to_json_file(json_content, full_path)
     pass
