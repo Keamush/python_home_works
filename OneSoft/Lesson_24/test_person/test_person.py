@@ -1,5 +1,5 @@
 import unittest
-from person.person_verify import PersonData, Person, PersonVerifyRus
+from OneSoft.Lesson_24.person.person_verify import PersonData, Person, PersonVerifyRus
 
 
 class TestPersonClass(unittest.TestCase):
